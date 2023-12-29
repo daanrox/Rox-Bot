@@ -1,4 +1,5 @@
 # Rox-Bot
+Bot em desenvolvimento
 
 ## Descrição
 O Rox-Bot é um bot do Discord com várias funcionalidades de mensagens automáticas, notícias e alguns comandos engraçados.

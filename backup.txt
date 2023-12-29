@@ -1,17 +1,10 @@
 import discord
 from discord import app_commands
 import random
-import youtube_dl
-import asyncio
-import pafy
-import spotipy
-from spotipy.oauth2 import SpotifyClientCredentials
+youtube_dl
+asyncio
 
-id_do_servidor = 0000000000000000 #Coloque aqui o ID do seu servidor
-
-spotify_client_id = 'SPOTIFY_CI'
-spotify_client_secret = 'SPOTIFY_CS'
-
+id_do_servidor = 823995232739000320 #Coloque aqui o ID do seu servidor
 
 class client(discord.Client):
     def __init__(self):
@@ -23,7 +16,7 @@ class client(discord.Client):
         if not self.synced: #Checar se os comandos slash foram sincronizados 
             await tree.sync(guild = discord.Object(id=id_do_servidor)) # Você também pode deixar o id do servidor em branco para aplicar em todos servidores, mas isso fará com que demore de 1~24 horas para funcionar.
             self.synced = True
-        await self.change_presence(activity=discord.Game(name="Leitinho no Victor"))
+        await self.change_presence(activity=discord.Game(name="Joguinho de tiro"))
         print(f"Entramos como {self.user}.")
 
 aclient = client()
@@ -41,42 +34,27 @@ async def slash3(interaction: discord.Interaction):
 async def slash4(interaction: discord.Interaction):
     numero = random.randint(1,38)
     await interaction.response.send_message(f"Sua Jeba tem {numero} Cm", ephemeral = False) 
-    
+    await ctx.send("O Victor engole sem engasgar") 
+    await ctx.send("KKK, para saber o tamanho da sua Jeba, digite /jeba ")
 
-spotify_client_credentials_manager = SpotifyClientCredentials(client_id=spotify_client_id, client_secret=spotify_client_secret)
-spotify_sp = spotipy.Spotify(client_credentials_manager=spotify_client_credentials_manager)
-
-
-
-@tree.command(guild=discord.Object(id=id_do_servidor), name='play', description='Tocar música no canal de voz')
+@tree.command(guild = discord.Object(id=id_do_servidor), name='play', description='Tocar música no canal de voz')
 async def play_command(interaction: discord.Interaction):
-    member = interaction.guild.get_member(interaction.user.id)
-    if member.voice is None or member.voice.channel is None:
-        await interaction.response.send_message('Você precisa estar em um canal de voz para usar este comando.', ephemeral=True)
-        return
+    playlist_url = 'https://youtube.com/playlist?list=PL0ukkm3h27Ig7-MrUl5UzpmrIS3UxskE3&si=KuSMd2MUPRFeGo6G'
 
-    channel = member.voice.channel
-    if channel:
-        voice_client = await channel.connect()
+    ydl_opts = {
+        'format': 'bestaudio/best',
+        'quiet': True,
+    }
 
-        mp3_path = 'music.mp3.mp3'
+    with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+        info_dict = ydl.extract_info(playlist_url, download=False)
+        for entry in info_dict['entries']:
+            songs.append({
+                'title': entry['title'],
+                'url': entry['url'],
+                'duration': entry['duration']
+            })
 
-        if mp3_path:
-            await interaction.response.send_message("Iniciando a música...")
-            while True:
-                voice_client.play(discord.FFmpegPCMAudio(mp3_path))
-                while voice_client.is_playing():
-                    await asyncio.sleep(1)
+    await play_music(interaction)
 
-        await interaction.response.send_message("Vídeo reproduzido com sucesso!")
-    else:
-        await interaction.response.send_message("Você precisa estar em um canal de voz para usar este comando.")
-
-
-
-
-
-
-
-
-aclient.run('TOKEN')
+aclient.run('MTA1MDAzNDk1MDE2ODEzNzc4OA.GNEBLW.tKejXNsoIxAWMRBdIfO1hnDe62OLjH-zeUThDg')

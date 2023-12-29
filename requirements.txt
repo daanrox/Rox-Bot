@@ -1,2 +1,4 @@
 discord.py
 newsapi-python
+youtube_dl
+asyncio
